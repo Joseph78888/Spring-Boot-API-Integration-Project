@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 public class UsersController {
 
     private final UserService userService;
@@ -19,7 +19,7 @@ public class UsersController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
+    @GetMapping
     public User[] getUsers(){
         return userService.getUsers();
     }

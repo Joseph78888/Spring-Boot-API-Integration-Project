@@ -5,6 +5,7 @@ import com.example.jsonwrapper.model.Post;
 import com.example.jsonwrapper.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +17,7 @@ public class PostController {
     public PostController(PostService postService) {
         this.postService = postService;
     }
+
 
     @GetMapping
     public Post[] getAllPosts(@RequestParam(required = false) Long userId){

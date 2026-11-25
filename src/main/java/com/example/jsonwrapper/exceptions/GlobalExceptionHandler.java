@@ -6,8 +6,19 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpStatusCodeException;
 
+import java.rmi.ServerException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+
+    @ExceptionHandler(PostNotFoundException.class)
+    public ProblemDetail handlePostNotFound(PostNotFoundException exception) {
+        return ProblemDetail.forStatusAndDetail(
+                HttpStatus.NOT_FOUND,
+                exception.getMessage()
+        );
+    }
 
     @ExceptionHandler(HttpStatusCodeException.class)
     public ProblemDetail handle(HttpStatusCodeException ex) {
@@ -22,5 +33,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ApiException.class)
     public ProblemDetail handleApiError(ApiException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_GATEWAY, ex.getMessage());
+    }
+
+    @ExceptionHandler(ServerException.class)
+    public ProblemDetail handleServerError(ServerException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 }

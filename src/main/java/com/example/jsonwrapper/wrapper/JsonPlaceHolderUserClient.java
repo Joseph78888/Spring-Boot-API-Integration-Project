@@ -10,10 +10,8 @@ public class JsonPlaceHolderUserClient implements UserGateway {
 
     private final RestClient restClient;
 
-    public JsonPlaceHolderUserClient(RestClient.Builder builder) {
-        this.restClient = builder
-                .baseUrl("https://jsonplaceholder.typicode.com")
-                .build();
+    public JsonPlaceHolderUserClient(RestClient client) {
+        this.restClient = client;
     }
 
     @Override

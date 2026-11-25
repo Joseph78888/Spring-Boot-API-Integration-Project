@@ -1,5 +1,7 @@
 package com.example.jsonwrapper.wrapper;
 
+import com.example.jsonwrapper.exceptions.NotFoundException;
+import com.example.jsonwrapper.exceptions.PostNotFoundException;
 import com.example.jsonwrapper.model.Post;
 import com.example.jsonwrapper.service.PostGateway;
 import org.springframework.http.MediaType;
@@ -11,10 +13,9 @@ public class JsonPlaceHolderPostClient implements PostGateway {
 
     private final RestClient client;
 
-    public JsonPlaceHolderPostClient(RestClient.Builder builder) {
-        this.client = builder
-                .baseUrl("https://jsonplaceholder.typicode.com")
-                .build();
+    public JsonPlaceHolderPostClient(RestClient client) {
+        this.client = client;
+
     }
 
     @Override
@@ -30,6 +31,12 @@ public class JsonPlaceHolderPostClient implements PostGateway {
         return client.get()
                 .uri("/posts/{id}", id) // path variable || query parameter
                 .retrieve()
+                .onStatus(
+                        status -> status.value() == 404,
+                        (request, response) -> {
+                            throw new PostNotFoundException(id);
+                        }
+                )
                 .body(Post.class); // response body  || .toEntity ->
     }
 
