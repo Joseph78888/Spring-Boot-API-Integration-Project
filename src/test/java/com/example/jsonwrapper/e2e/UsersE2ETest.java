@@ -17,34 +17,16 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 @AutoConfigureTestRestTemplate
 class UsersE2ETest {
 
-//    @RegisterExtension
-//    static WireMockExtension wm = WireMockExtension.newInstance().options(wireMockConfiq().dynamicPort()).build();
-
-
     @Autowired
     private TestRestTemplate rest;
-
-//    @Autowired
-//    private MockMvc mockMvc;
 
     @Test
     void getAllUsers() {
 
-        // arrange
-//        wm.stubFor(get("/users").willReturn(okJson("""
-//                [
-//                    {"id":1,"name":"testName","username":"testUName", "email": "test@email", "address": {}
-//                ]
-//                """)));
+        ResponseEntity<User[]> res = rest.getForEntity("/api/users", User[].class);
 
-        ResponseEntity<String> res = rest.getForEntity("/api/users", String.class);
-        System.out.println(res.getStatusCode());
-        System.out.println(res.getBody());
-
-//        ResponseEntity<User[]> res = rest.getForEntity("/api/users", User[].class);
-//
-//        assertThat(res.getStatusCode()).isEqualTo(HttpStatus.OK);
-//        assertThat(res.getBody()).hasSize(10);
+        assertThat(res.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(res.getBody()).hasSize(10);
 
 
     }
